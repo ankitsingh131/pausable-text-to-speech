@@ -50,7 +50,6 @@ class PausableTextToSpeech(
                     val next = bufferProcessor.next()
                     val let: Int? = next?.let {
                         state = State.PLAYING
-                        println("Speaking utterance: ${next.speech}")
                         return@let textToSpeech.speak(
                             next.speech,
                             queueMode,
@@ -59,10 +58,8 @@ class PausableTextToSpeech(
                         )
                     }
                     if (let == null) {
-                        println("let is null.")
                         utteranceHelper?.onDone(utteranceId)
                     }
-                    println("Value of let: $let")
                 }
 
                 override fun onError(utteranceId: String?) {
@@ -101,7 +98,6 @@ class PausableTextToSpeech(
             next?.let {
                 state = State.PLAYING
                 utteranceHelper?.onStart(next.utteranceID)
-                println("Speaking utterance: ${next.speech}")
                 return textToSpeech.speak(next.speech, queueMode, ttsBundle, next.utteranceID)
             }
         }
@@ -113,7 +109,6 @@ class PausableTextToSpeech(
         current?.let {
             state = State.PLAYING
             utteranceHelper?.onStart(current.utteranceID)
-            println("Speaking utterance: ${current.speech}")
             textToSpeech.speak(current.speech, queueMode, ttsBundle, current.utteranceID)
         }
     }
