@@ -14,9 +14,7 @@ maven { url "https://jitpack.io" }
 
 **2.** Add this dependency in app level gradle file
 ```
-```
 implementation 'com.github.ankitsingh131:pausable-text-to-speech:v1.0.1'
-```
 ```
 
 **3.** To Initialize Pausable Text-To-Speech in Java
