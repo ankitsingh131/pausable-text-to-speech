@@ -91,3 +91,9 @@ pausableTextToSpeech.stop();
 ```
 pausableTextToSpeech.pause(true);
 ```
+
+**To add more delimiters**
+```
+pausableTextToSpeech.addDelimiters(true, "your delimiters here");
+```
+> **Tip:** 1st parameter here if true all your given delimiters will be added to the default list of delimiters i.e. ".?!\n".

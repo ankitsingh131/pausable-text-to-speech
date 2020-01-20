@@ -17,10 +17,22 @@ class BufferProcessor(pausableTextToSpeech: PausableTextToSpeech) : IBufferProce
     companion object {
 
         private const val WORD = " "
-        private const val LINE = ".|?|!|\n"
+        private const val LINE = ".?!\n"
         private const val PARAGRAPH = "\n"
         private const val DEFAULT_DELIMITER: String = LINE
         internal var INVISIBLE_CHARACTER: String = "\u2063"
+    }
+
+    internal fun addDelimiters(addInPreviousDelimiters: Boolean = false, vararg delimiters: String) {
+        if (!addInPreviousDelimiters) {
+            currentDelimiter = ""
+        }
+        currentDelimiter = delimiters.distinct().filter { !currentDelimiter.contains(it) }
+            .joinToString(separator = "", prefix = currentDelimiter, truncated = "")
+    }
+
+    internal fun useDefaultDelimiter() {
+        currentDelimiter = DEFAULT_DELIMITER
     }
 
     override fun process(
@@ -46,16 +58,20 @@ class BufferProcessor(pausableTextToSpeech: PausableTextToSpeech) : IBufferProce
         breakStrategy: String = LINE,
         utteranceID: String?
     ) {
-        val stringTokenizer = StringTokenizer(speech, breakStrategy)
-        var isFirst = true
-        while (stringTokenizer.hasMoreTokens()) {
-            speechList.add(
-                Speech(
-                    stringTokenizer.nextToken(),
-                    if (isFirst || !stringTokenizer.hasMoreTokens()) utteranceID else if (utteranceID.isNullOrEmpty()) "" else "default${INVISIBLE_CHARACTER}$utteranceID"
+        if (breakStrategy.isEmpty()) {
+            speechList.add(Speech(speech, utteranceID))
+        } else {
+            val stringTokenizer = StringTokenizer(speech, breakStrategy)
+            var isFirst = true
+            while (stringTokenizer.hasMoreTokens()) {
+                speechList.add(
+                    Speech(
+                        stringTokenizer.nextToken(),
+                        if (isFirst || !stringTokenizer.hasMoreTokens()) utteranceID else if (utteranceID.isNullOrEmpty()) "" else "default${INVISIBLE_CHARACTER}$utteranceID"
+                    )
                 )
-            )
-            isFirst = false
+                isFirst = false
+            }
         }
     }
 

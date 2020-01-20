@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), PausableTextToSpeech.OnInitListener, I
 
     override fun onInit() {
         pausableTextToSpeech.setOnUtteranceProgressListener(this)
+        pausableTextToSpeech.addDelimiters(true, ".", "?", "\n", "!")
     }
 
     override fun onStart(utteranceId: String?) {
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity(), PausableTextToSpeech.OnInitListener, I
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnStart -> {
-                pausableTextToSpeech.start("Hey this is sample. Test let value? Coding pausable tts!", PausableTextToSpeech.QUEUE_FLUSH, null, "dummyUtterance", true)
+                pausableTextToSpeech.start("Hey this is sample. Test | let value? Coding pausable tts!", PausableTextToSpeech.QUEUE_FLUSH, null, "dummyUtterance", true)
             }
             R.id.btnResume -> {
                 pausableTextToSpeech.resume()

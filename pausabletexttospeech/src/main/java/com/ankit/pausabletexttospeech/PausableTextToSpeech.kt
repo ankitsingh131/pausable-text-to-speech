@@ -80,6 +80,10 @@ class PausableTextToSpeech(
         }
     }
 
+    fun addDelimiters(addInPreviousDelimiters: Boolean = false, vararg delimiters: String) {
+        bufferProcessor.addDelimiters(addInPreviousDelimiters, *delimiters)
+    }
+
     fun start(
         speech: String,
         queueMode: Int,
